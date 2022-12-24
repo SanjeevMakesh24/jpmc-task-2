@@ -14,8 +14,8 @@ interface IProps {
  * Perspective library adds load to HTMLElement prototype.
  * This interface acts as a wrapper for Typescript compiler.
  */
-interface PerspectiveViewerElement {
-  load: (table: Table) => void,
+interface PerpectiveViewerElement extends HTMLElement {
+    load: (table: Table) => void,
 }
 
 /**
@@ -31,8 +31,9 @@ class Graph extends Component<IProps, {}> {
   }
 
   componentDidMount() {
-    // Get element to attach the table from the DOM.
-    const elem: PerspectiveViewerElement = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
+      // Get element to attach the table from the DOM.
+      const elem: document.getElementsByTagName('perpective-viewer')[0] as unknown as PerpectiveViewerElement;
+//          PerspectiveViewerElement = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
 
     const schema = {
       stock: 'string',
@@ -48,7 +49,16 @@ class Graph extends Component<IProps, {}> {
       // Load the `table` in the `<perspective-viewer>` DOM reference.
 
       // Add more Perspective configurations here.
-      elem.load(this.table);
+        elem.load(this.table);
+        elem.setAttribute('view', 'y_line');
+        elem.setAttribute('column-pivots', '["stock"]');
+        elem.setAttribute('row-pivots', '["timestamps"]');
+        elem.setAttribute('columns', '["top_ask_price"]');
+        elem.setAttribute('aggregates', 
+            {"stock": "distinct count",
+            "top_ask_price": "avg",
+            "top_bid_price": "avg",
+            "timestamp": "distinct count" }  );
     }
   }
 
